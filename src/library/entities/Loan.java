@@ -17,6 +17,12 @@ public class Loan implements ILoan {
 	ELoanState _state;
 	int _loanID;
 	
+	public void setBook(IBook book){
+		if (book == null){
+			throw new IllegalArgumentException("Parameters cannot be null");
+		}
+		_book = book;
+	}
 	
 	public Loan (IBook book, IMember member, Date borrowDate, Date dueDate){
 		if (book == null || 
@@ -57,11 +63,8 @@ public class Loan implements ILoan {
 	
 	@Override
 	public void complete() {
-		if (_state != ELoanState.CURRENT){
+		if (_state == ELoanState.CURRENT || _state == ELoanState.OVERDUE){
 			throw new RuntimeException("Loan state not current");
-		}
-		if(_state != ELoanState.OVERDUE){
-			throw new RuntimeException("Loan state not overdue");
 		}
 		
 		_state = ELoanState.COMPLETE;
@@ -79,7 +82,7 @@ public class Loan implements ILoan {
 
 	@Override
 	public boolean checkOverDue(Date currentDate) {
-		if (_state != ELoanState.CURRENT || _state != ELoanState.OVERDUE){
+		if (_state == ELoanState.CURRENT || _state == ELoanState.OVERDUE){
 			throw new RuntimeException("Loan state not current or overdue");
 		}
 		

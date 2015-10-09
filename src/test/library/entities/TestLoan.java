@@ -90,7 +90,7 @@ public class TestLoan {
 	
 	@Test
 	public void testComplete() {
-		//_loan.complete();
+		_loan.complete();
 	}
 
 	@Test
@@ -99,23 +99,9 @@ public class TestLoan {
 	}
 
 	@Test
-	public void testCheckOverDue_OnDue() {
+	public void testCheckOverDue_OnDueDate() {
 		assertFalse(_loan.checkOverDue(_dueDate));
 	}
 
-	@Test
-	public void testGetBorrower() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetBook() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void testGetID() {
-		fail("Not yet implemented");
-	}
 
 }

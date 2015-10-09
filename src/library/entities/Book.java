@@ -6,16 +6,45 @@ import library.interfaces.entities.ILoan;
 
 public class Book implements IBook {
 
+	String _author, _title, _callNumber;
+	int _bookID;
+	EBookState _state;
+	ILoan _loan;
+	
+	public Book (String author, String title, String callNumber, int bookID){
+		
+		if (author == null || author == "" ||
+				title == null || title == "" ||
+				callNumber == null || callNumber == "" ){
+			throw new IllegalArgumentException("Parameters cannot be null or blank");
+		}
+		if (bookID <= 0){
+			throw new IllegalArgumentException("Book ID is 0 or less");
+		}
+		
+		_author = author;
+		_title = title;
+		_callNumber = callNumber;
+		_bookID = bookID;
+		
+		
+	}
+	
+	
 	@Override
 	public void borrow(ILoan loan) {
-		// TODO Auto-generated method stub
-
+		if (_state != EBookState.AVAILABLE){
+			throw new RuntimeException("Book not available");
+		}
+		loan.setBook(this);
 	}
 
 	@Override
 	public ILoan getLoan() {
-		// TODO Auto-generated method stub
-		return null;
+		if(_state == EBookState.ON_LOAN)
+			return null;
+		else
+			return _loan;
 	}
 
 	@Override
