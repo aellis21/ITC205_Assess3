@@ -19,6 +19,8 @@ public interface ILoan {
 	
 	public IMember getBorrower();
 	
+	public void setOverDue();
+	
 	public IBook getBook();
 	
 	public int getID();
