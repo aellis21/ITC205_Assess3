@@ -1,5 +1,6 @@
 package library.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import library.interfaces.entities.EMemberState;
@@ -11,9 +12,9 @@ public class Member implements IMember {
 
 	String _firstName, _lastName, _contactPhone, _emailAddress;
 	int _ID;
-	float finesPayable;
+	float _finesPayable;
 	EMemberState _state;
-	List<ILoan> loans;
+	List<ILoan> _loans;
 	
 	public Member (String firstName, String lastName, String contactPhone, String emailAddress, int ID){
 		
@@ -32,6 +33,7 @@ public class Member implements IMember {
 		_contactPhone = contactPhone;
 		_emailAddress = emailAddress;
 		_ID = ID;
+		_loans = new ArrayList<>();
 		
 	}
 	
@@ -39,39 +41,34 @@ public class Member implements IMember {
 	@Override
 	public void addLoan(ILoan loan) {
 		if (!hasReachedLoanLimit())
-			loans.add(loan);
+			_loans.add(loan);
+		else
+			throw new RuntimeException ("Loan limit reached");
 	}
 
 	@Override
 	public void removeLoan(ILoan loan) {
-		loans.remove(loan);
+		_loans.remove(loan);
 	}
 	
 	@Override
 	public List<ILoan> getLoans() {
-		return loans;
+		return _loans;
 	}
 	
 	@Override
 	public boolean hasOverDueLoans() {
-		
-		int overDueCounter = 0;
-		
-		for (int i = 0; i < loans.size(); i++){
-			if (loans.get(i).isOverDue()){
-				overDueCounter++;
+		for (int i = 0; i < _loans.size(); i++){
+			if (_loans.get(i).isOverDue()){
+				return true;
 			}
 		}
-		
-		if (overDueCounter > 0)
-			return true;
-		else
-			return false;
+		return false;
 	}
 
 	@Override
 	public boolean hasReachedLoanLimit() {
-		if (loans.size() >= IMember.LOAN_LIMIT)
+		if (_loans.size() >= IMember.LOAN_LIMIT)
 			return true;
 		else
 			return false;
@@ -79,7 +76,7 @@ public class Member implements IMember {
 
 	@Override
 	public boolean hasFinesPayable() {
-		if (finesPayable > 0)
+		if (_finesPayable > 0)
 			return true;
 		else
 			return false;
@@ -87,7 +84,7 @@ public class Member implements IMember {
 
 	@Override
 	public boolean hasReachedFineLimit() {
-		if (loans.size() >= IMember.FINE_LIMIT)
+		if (_loans.size() >= IMember.FINE_LIMIT)
 			return true;
 		else
 			return false;
@@ -95,23 +92,23 @@ public class Member implements IMember {
 
 	@Override
 	public float getFineAmount() {
-		return finesPayable;
+		return _finesPayable;
 	}
 
 	@Override
 	public void addFine(float fine) {
-		if (loans.size() >= IMember.FINE_LIMIT)
+		if (getFineAmount() >= IMember.FINE_LIMIT)
 			throw new RuntimeException("Fine limit reached");
 		else
-			finesPayable += fine;
+			_finesPayable += fine;
 	}
 
 	@Override
 	public void payFine(float payment) {
-		if (loans.size() >= IMember.FINE_LIMIT)
-			throw new RuntimeException("Fine limit reached");
+		if (getFineAmount() < 0)
+			throw new RuntimeException("No fine owed");
 		else
-			finesPayable -= payment;
+			_finesPayable -= payment;
 
 	}
 
