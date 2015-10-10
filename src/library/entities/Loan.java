@@ -16,13 +16,7 @@ public class Loan implements ILoan {
 	Calendar _calendar;
 	ELoanState _state;
 	int _loanID;
-	
-	public void setBook(IBook book){
-		if (book == null){
-			throw new IllegalArgumentException("Parameters cannot be null");
-		}
-		_book = book;
-	}
+
 	
 	public Loan (IBook book, IMember member, Date borrowDate, Date dueDate){
 		if (book == null || 

@@ -9,7 +9,7 @@ public class Book implements IBook {
 	String _author, _title, _callNumber;
 	int _bookID;
 	EBookState _state;
-	ILoan _loan;
+	public ILoan _loan;
 	
 	public Book (String author, String title, String callNumber, int bookID){
 		
@@ -19,7 +19,7 @@ public class Book implements IBook {
 			throw new IllegalArgumentException("Parameters cannot be null or blank");
 		}
 		if (bookID <= 0){
-			throw new IllegalArgumentException("Book ID is 0 or less");
+			throw new IllegalArgumentException("BookID cannot be 0 or less");
 		}
 		
 		_author = author;
@@ -30,13 +30,17 @@ public class Book implements IBook {
 		
 	}
 	
+	@Override
+	public void setState(EBookState state){
+		_state = state;
+	}
 	
 	@Override
 	public void borrow(ILoan loan) {
 		if (_state != EBookState.AVAILABLE){
 			throw new RuntimeException("Book not available");
 		}
-		loan.setBook(this);
+		_loan = loan;
 	}
 
 	@Override
@@ -49,56 +53,65 @@ public class Book implements IBook {
 
 	@Override
 	public void returnBook(boolean damaged) {
-		// TODO Auto-generated method stub
+		if(_state == EBookState.ON_LOAN)
+			throw new RuntimeException("Book not available");
+		if (damaged)
+			_state = EBookState.DAMAGED;
+		else
+			_state = EBookState.AVAILABLE;
 
+		_loan = null;
 	}
 
 	@Override
 	public void lose() {
-		// TODO Auto-generated method stub
+		if(_state == EBookState.ON_LOAN){
+			throw new RuntimeException("Book not available");
+		}
+		_state = EBookState.LOST;
 
 	}
 
 	@Override
 	public void repair() {
-		// TODO Auto-generated method stub
-
+		if(_state != EBookState.DAMAGED)
+			throw new RuntimeException("Book not damaged");
+		_state = EBookState.AVAILABLE;
 	}
 
 	@Override
 	public void dispose() {
-		// TODO Auto-generated method stub
+		if(_state != EBookState.DAMAGED &&
+				_state != EBookState.AVAILABLE &&
+				_state != EBookState.LOST)
+			throw new RuntimeException("Book not damaged, available or lost");
+		_state = EBookState.DISPOSED;
 
 	}
 
 	@Override
 	public EBookState getState() {
-		// TODO Auto-generated method stub
-		return null;
+		return _state;
 	}
 
 	@Override
 	public String getAuthor() {
-		// TODO Auto-generated method stub
-		return null;
+		return _author;
 	}
 
 	@Override
 	public String getTitle() {
-		// TODO Auto-generated method stub
-		return null;
+		return _title;
 	}
 
 	@Override
 	public String getCallNumber() {
-		// TODO Auto-generated method stub
-		return null;
+		return _callNumber;
 	}
 
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
-		return 0;
+		return _bookID;
 	}
 
 }

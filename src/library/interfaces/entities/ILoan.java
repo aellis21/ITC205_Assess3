@@ -19,7 +19,6 @@ public interface ILoan {
 	
 	public IMember getBorrower();
 	
-	public void setBook(IBook book);
 	
 	public IBook getBook();
 	
