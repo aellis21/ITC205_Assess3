@@ -42,7 +42,7 @@ public class TestLoan {
 		_loan = null;
 	}
 	
-	@Test
+	@Test (expected=IllegalArgumentException.class)
 	public void testCreate(){
 		ILoan loan = new Loan(_book, _member, _borrowDate, _dueDate);
 		assertTrue (loan instanceof Loan);
