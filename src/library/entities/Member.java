@@ -100,7 +100,7 @@ public class Member implements IMember {
 
 	@Override
 	public void addFine(float fine) {
-		if (loans.size() >= IMember.FINE_LIMIT)
+		if (loans.size() <= IMember.FINE_LIMIT)
 			throw new RuntimeException("Fine limit reached");
 		else
 			finesPayable += fine;
