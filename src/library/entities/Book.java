@@ -26,7 +26,7 @@ public class Book implements IBook {
 		_title = title;
 		_callNumber = callNumber;
 		_bookID = bookID;
-		
+		_state = EBookState.AVAILABLE;
 		
 	}
 	
@@ -40,6 +40,7 @@ public class Book implements IBook {
 		if (_state != EBookState.AVAILABLE){
 			throw new RuntimeException("Book not available");
 		}
+		_state = EBookState.ON_LOAN;
 		_loan = loan;
 	}
 

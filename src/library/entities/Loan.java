@@ -36,9 +36,6 @@ public class Loan implements ILoan {
 		_state = ELoanState.PENDING;
 	}
 	
-	public void setOverDue(){
-		_state = ELoanState.OVERDUE;
-	}
 	
 	@Override
 	public void commit(int loanID) {
